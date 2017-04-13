@@ -7,20 +7,20 @@ from flask_restful_swagger_2 import Resource, swagger
 from mongoalchemy.exceptions import ExtraValueException
 
 from qube.src.api.decorators import login_required
-from qube.src.api.swagger_models.hello import HelloModel # noqa: ignore=I100
-from qube.src.api.swagger_models.hello import HelloModelPost # noqa: ignore=I100
-from qube.src.api.swagger_models.hello import HelloModelPostResponse # noqa: ignore=I100
-from qube.src.api.swagger_models.hello import HelloModelPut # noqa: ignore=I100
+from qube.src.api.swagger_models.natashas_demo_run import natashas_demo_runModel # noqa: ignore=I100
+from qube.src.api.swagger_models.natashas_demo_run import natashas_demo_runModelPost # noqa: ignore=I100
+from qube.src.api.swagger_models.natashas_demo_run import natashas_demo_runModelPostResponse # noqa: ignore=I100
+from qube.src.api.swagger_models.natashas_demo_run import natashas_demo_runModelPut # noqa: ignore=I100
 
 from qube.src.api.swagger_models.parameters import (
     body_post_ex, body_put_ex, header_ex, path_ex, query_ex)
 from qube.src.api.swagger_models.response_messages import (
     del_response_msgs, ErrorModel, get_response_msgs, post_response_msgs,
     put_response_msgs)
-from qube.src.commons.error import HelloServiceError
+from qube.src.commons.error import natashas_demo_runServiceError
 from qube.src.commons.log import Log as LOG
 from qube.src.commons.utils import clean_nonserializable_attributes
-from qube.src.services.helloservice import HelloService
+from qube.src.services.natashas_demo_runservice import natashas_demo_runService
 
 EMPTY = ''
 get_details_params = [header_ex, path_ex, query_ex]
@@ -30,25 +30,25 @@ get_params = [header_ex]
 post_params = [header_ex, body_post_ex]
 
 
-class HelloItemController(Resource):
+class natashas_demo_runItemController(Resource):
     @swagger.doc(
         {
-            'tags': ['Hello'],
-            'description': 'Hello get operation',
+            'tags': ['natashas_demo_run'],
+            'description': 'natashas_demo_run get operation',
             'parameters': get_details_params,
             'responses': get_response_msgs
         }
     )
     @login_required
     def get(self, authcontext, entity_id):
-        """gets an hello item that omar has changed
+        """gets an natashas_demo_run item that omar has changed
         """
         try:
             LOG.debug("Get details by id %s ", entity_id)
-            data = HelloService(authcontext['context'])\
+            data = natashas_demo_runService(authcontext['context'])\
                 .find_by_id(entity_id)
             clean_nonserializable_attributes(data)
-        except HelloServiceError as e:
+        except natashas_demo_runServiceError as e:
             LOG.error(e)
             return ErrorModel(**{'error_code': str(e.errors.value),
                                  'error_message': e.args[0]}), e.errors
@@ -56,12 +56,12 @@ class HelloItemController(Resource):
             LOG.error(e)
             return ErrorModel(**{'error_code': '400',
                                  'error_message': e.args[0]}), 400
-        return HelloModel(**data), 200
+        return natashas_demo_runModel(**data), 200
 
     @swagger.doc(
         {
-            'tags': ['Hello'],
-            'description': 'Hello put operation',
+            'tags': ['natashas_demo_run'],
+            'description': 'natashas_demo_run put operation',
             'parameters': put_params,
             'responses': put_response_msgs
         }
@@ -69,14 +69,14 @@ class HelloItemController(Resource):
     @login_required
     def put(self, authcontext, entity_id):
         """
-        updates an hello item
+        updates an natashas_demo_run item
         """
         try:
-            model = HelloModelPut(**request.get_json())
+            model = natashas_demo_runModelPut(**request.get_json())
             context = authcontext['context']
-            HelloService(context).update(model, entity_id)
+            natashas_demo_runService(context).update(model, entity_id)
             return EMPTY, 204
-        except HelloServiceError as e:
+        except natashas_demo_runServiceError as e:
             LOG.error(e)
             return ErrorModel(**{'error_code': str(e.errors.value),
                                  'error_message': e.args[0]}), e.errors
@@ -91,8 +91,8 @@ class HelloItemController(Resource):
 
     @swagger.doc(
         {
-            'tags': ['Hello'],
-            'description': 'Hello delete operation',
+            'tags': ['natashas_demo_run'],
+            'description': 'natashas_demo_run delete operation',
             'parameters': delete_params,
             'responses': del_response_msgs
         }
@@ -100,12 +100,12 @@ class HelloItemController(Resource):
     @login_required
     def delete(self, authcontext, entity_id):
         """
-        Delete hello item
+        Delete natashas_demo_run item
         """
         try:
-            HelloService(authcontext['context']).delete(entity_id)
+            natashas_demo_runService(authcontext['context']).delete(entity_id)
             return EMPTY, 204
-        except HelloServiceError as e:
+        except natashas_demo_runServiceError as e:
             LOG.error(e)
             return ErrorModel(**{'error_code': str(e.errors.value),
                                  'error_message': e.args[0]}), e.errors
@@ -119,11 +119,11 @@ class HelloItemController(Resource):
                                  'error_message': ex.args[0]}), 500
 
 
-class HelloController(Resource):
+class natashas_demo_runController(Resource):
     @swagger.doc(
         {
-            'tags': ['Hello'],
-            'description': 'Hello get operation',
+            'tags': ['natashas_demo_run'],
+            'description': 'natashas_demo_run get operation',
             'parameters': get_params,
             'responses': get_response_msgs
         }
@@ -131,17 +131,17 @@ class HelloController(Resource):
     @login_required
     def get(self, authcontext):
         """
-        gets all hello items
+        gets all natashas_demo_run items
         """
         LOG.debug("Serving  Get all request")
-        list = HelloService(authcontext['context']).get_all()
+        list = natashas_demo_runService(authcontext['context']).get_all()
         # normalize the name for 'id'
         return list, 200
 
     @swagger.doc(
         {
-            'tags': ['Hello'],
-            'description': 'Hello create operation',
+            'tags': ['natashas_demo_run'],
+            'description': 'natashas_demo_run create operation',
             'parameters': post_params,
             'responses': post_response_msgs
         }
@@ -149,14 +149,14 @@ class HelloController(Resource):
     @login_required
     def post(self, authcontext):
         """
-        Adds a hello item.
+        Adds a natashas_demo_run item.
         """
         try:
-            model = HelloModelPost(**request.get_json())
-            result = HelloService(authcontext['context'])\
+            model = natashas_demo_runModelPost(**request.get_json())
+            result = natashas_demo_runService(authcontext['context'])\
                 .save(model)
 
-            response = HelloModelPostResponse()
+            response = natashas_demo_runModelPostResponse()
             for key in response.properties:
                 response[key] = result[key]
 
