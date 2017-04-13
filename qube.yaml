@@ -1,0 +1,32 @@
+id: 05b263f4-cb01-49f5-9b92-9a8d2f955167
+version: v2
+name: natashas_demo_run
+apptype: api
+language: python
+containerName: natashas-demo-run
+toolchain:
+  id: 58e57163acac5a001de2b931
+  name: Qubeship-Python-Toolchain
+opinion:
+  id: 58e5716613d0cc000e88a95e
+  name: Qubeship default opinion
+endpoint:
+  id: 58ed6ffe238503000b74d7a4
+  name: Qubeship Sandbox Cluster
+  type: target
+variables:
+  - name: APP_VERSION
+    value: v0.1
+build:
+  compile:
+    publish:
+     - dist/
+bake:
+  skip: false
+test:
+  skip: true
+deploy_to_qa:
+  skip: true
+deploy_to_prod:
+  skip: false
+
